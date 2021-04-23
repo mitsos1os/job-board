@@ -4,12 +4,11 @@ export default () => {
   } = process;
   const host = DB_HOST;
   const port = DB_PORT && parseInt(DB_PORT, 10);
-  const dbName = DB_NAME;
   return {
     host,
     port,
-    dbName,
-    user: DB_USER,
-    pass: DB_PASS,
+    database: DB_NAME,
+    username: DB_USER,
+    password: DB_PASS,
   };
 };
