@@ -4,7 +4,7 @@ services:
 
   db:
     image: postgres:13
-    env_file: docker-compose.env
+    env_file: .env
     restart: always
     ports:
       - "5432:5432"
@@ -12,7 +12,7 @@ services:
       - "db-data:/var/lib/postgresql/data"
   pgAdmin:
     image: dpage/pgadmin4
-    env_file: docker-compose.env
+    env_file: .env
     restart: always
     ports:
       - "8080:80"
