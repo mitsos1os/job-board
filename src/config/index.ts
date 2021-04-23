@@ -1,8 +1,6 @@
 import databaseConfig from './database.config';
-/**
- * Default port used for app initialization
- */
-const DEFAULT_PORT = 3000;
+
+export { default as validationSchema } from './validation.config';
 
 export default () => {
   // Get values from environment
@@ -10,7 +8,7 @@ export default () => {
     env: { PORT },
   } = process;
   return {
-    port: (PORT && parseInt(PORT, 10)) || DEFAULT_PORT,
+    port: PORT && parseInt(PORT, 10),
     database: databaseConfig(),
   };
 };
