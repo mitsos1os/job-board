@@ -1,9 +1,11 @@
-import { Module, Logger } from '@nestjs/common';
+import { Module, Logger, ValidationPipe } from '@nestjs/common';
+import { APP_PIPE } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { default as configuration, validationSchema } from './config';
 import { TypeOrmModule, TypeOrmOptionsFactory } from '@nestjs/typeorm';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -18,12 +20,18 @@ import { TypeOrmModule, TypeOrmOptionsFactory } from '@nestjs/typeorm';
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
         autoLoadEntities: true,
+        synchronize: true, // TODO remove after project is done and create migration
         ...configService.get<TypeOrmOptionsFactory>('database'),
       }),
       inject: [ConfigService],
     }),
+    UsersModule,
   ],
   controllers: [AppController],
-  providers: [AppService, Logger],
+  providers: [
+    AppService,
+    Logger,
+    { provide: APP_PIPE, useClass: ValidationPipe },
+  ],
 })
 export class AppModule {}
