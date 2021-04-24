@@ -3,7 +3,7 @@ import { APP_PIPE } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { default as configuration, validationSchema } from './config';
+import { default as configuration, validate } from './config';
 import { TypeOrmModule, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 
@@ -11,7 +11,7 @@ import { UsersModule } from './users/users.module';
   imports: [
     ConfigModule.forRoot({
       cache: true,
-      validationSchema,
+      validate,
       load: [configuration],
       expandVariables: true,
     }),

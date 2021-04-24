@@ -1,7 +1,6 @@
 import databaseConfig from './database.config';
 
-export { default as validationSchema } from './validation.config';
-
+export { validate } from './env.validation';
 export default () => {
   // Get values from environment
   const {

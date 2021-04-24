@@ -36,7 +36,6 @@
     "@nestjsx/crud-typeorm": "^5.0.0-alpha.3",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
-    "joi": "^17.4.0",
     "nest-winston": "^1.4.2",
     "pg": "^8.6.0",
     "reflect-metadata": "^0.1.13",
