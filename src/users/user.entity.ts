@@ -3,6 +3,7 @@ import { IsString, Length } from 'class-validator';
 import { UserProfile } from './user-profile.entity';
 import { BaseTimestampedEntity } from '../common/base-timestamped.entity';
 import { Company } from '../company/company.entity';
+import { Job } from '../job/job.entity';
 
 /**
  * Separation of user entity in order to be used without exposing any PII
@@ -26,4 +27,7 @@ export class User extends BaseTimestampedEntity {
 
   @OneToMany(() => Company, (company) => company.user)
   companies?: Company[];
+
+  @OneToMany(() => Job, (job) => job.user)
+  jobs?: Job[];
 }

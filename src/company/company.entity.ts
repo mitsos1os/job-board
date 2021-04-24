@@ -3,6 +3,7 @@ import { IsOptional, IsString } from 'class-validator';
 import { BaseSoftDeleteEntity } from '../common/base-soft-delete.entity';
 import { CompanyAddress } from './company-address.entity';
 import { User } from '../users/user.entity';
+import { Job } from '../job/job.entity';
 
 /**
  * Base company information
@@ -24,6 +25,10 @@ export class Company extends BaseSoftDeleteEntity {
 
   @ManyToOne(() => User, (user) => user.companies, {
     onDelete: 'CASCADE',
+    nullable: false,
   })
   user!: User;
+
+  @OneToMany(() => Job, (job) => job.company)
+  jobs?: Job;
 }

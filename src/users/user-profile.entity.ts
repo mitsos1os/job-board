@@ -26,6 +26,7 @@ export class UserProfile extends BaseTimestampedEntity {
 
   @OneToOne(() => User, (user) => user.profile, {
     onDelete: 'CASCADE',
+    nullable: false,
   })
   @JoinColumn()
   user!: User;
