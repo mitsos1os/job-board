@@ -1,29 +1,25 @@
 import { Entity, Column, OneToOne } from 'typeorm';
-import { IsString, IsEmail } from 'class-validator';
+import { IsString, Length } from 'class-validator';
+import { UserProfile } from './user-profile.entity';
 import { BaseTimestampedEntity } from '../common/base-timestamped.entity';
-import { UserCredentials } from './user-credentials.entity';
 
 /**
- * Our main User Class containing PII (Personal Identifiable Information) for
- * the user. It will be uniquely linked with user credentials
+ * Separation of user entity in order to be used without exposing any PII
  * @extends BaseTimestampedEntity
  */
 @Entity()
 export class User extends BaseTimestampedEntity {
   @IsString()
-  @Column()
-  firstName!: string;
+  @Column({ unique: true })
+  username!: string;
 
   @IsString()
+  @Length(8, 40)
   @Column()
-  lastName!: string;
+  password!: string;
 
-  @IsEmail()
-  @Column({
-    unique: true,
+  @OneToOne(() => UserProfile, (profile) => profile.user, {
+    cascade: true,
   })
-  email!: string;
-
-  @OneToOne(() => UserCredentials, (credentials) => credentials.user)
-  credentials!: UserCredentials;
+  profile!: UserProfile;
 }
