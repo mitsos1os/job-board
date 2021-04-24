@@ -1,7 +1,8 @@
-import { Entity, Column, OneToOne } from 'typeorm';
+import { Entity, Column, OneToOne, OneToMany } from 'typeorm';
 import { IsString, Length } from 'class-validator';
 import { UserProfile } from './user-profile.entity';
 import { BaseTimestampedEntity } from '../common/base-timestamped.entity';
+import { Company } from '../company/company.entity';
 
 /**
  * Separation of user entity in order to be used without exposing any PII
@@ -22,4 +23,7 @@ export class User extends BaseTimestampedEntity {
     cascade: true,
   })
   profile!: UserProfile;
+
+  @OneToMany(() => Company, (company) => company.user)
+  companies?: Company[];
 }
