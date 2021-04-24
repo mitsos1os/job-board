@@ -24,7 +24,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "postgres": "docker run --rm --name job-boad-db -e POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postresdb1234} -p 5432:5432 -v local-job-db:/var/lib/postgresql/data postgres:13"
+    "postgres": "docker run --rm --name job-board-db -e POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postresdb1234} -p 5432:5432 -v local-job-db:/var/lib/postgresql/data postgres:13"
   },
   "dependencies": {
     "@nestjs/common": "^7.6.15",
