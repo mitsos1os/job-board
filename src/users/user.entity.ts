@@ -1,12 +1,15 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { IsString, IsInt, IsEmail } from 'class-validator';
+import { Entity, Column, OneToOne } from 'typeorm';
+import { IsString, IsEmail } from 'class-validator';
+import { BaseTimestampedEntity } from '../common/base-timestamped.entity';
+import { UserCredentials } from './user-credentials.entity';
 
+/**
+ * Our main User Class containing PII (Personal Identifiable Information) for
+ * the user. It will be uniquely linked with user credentials
+ * @extends BaseTimestampedEntity
+ */
 @Entity()
-export class User {
-  @IsInt()
-  @PrimaryGeneratedColumn()
-  id!: number;
-
+export class User extends BaseTimestampedEntity {
   @IsString()
   @Column()
   firstName!: string;
@@ -16,6 +19,11 @@ export class User {
   lastName!: string;
 
   @IsEmail()
-  @Column()
+  @Column({
+    unique: true,
+  })
   email!: string;
+
+  @OneToOne(() => UserCredentials, (credentials) => credentials.user)
+  credentials!: UserCredentials;
 }
