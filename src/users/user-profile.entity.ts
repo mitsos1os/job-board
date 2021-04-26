@@ -1,5 +1,5 @@
 import { Entity, Column, OneToOne, JoinColumn } from 'typeorm';
-import { IsString, IsEmail } from 'class-validator';
+import { IsString, IsEmail, IsOptional } from 'class-validator';
 import { BaseTimestampedEntity } from '../common/base-timestamped.entity';
 import { User } from './user.entity';
 
@@ -11,12 +11,14 @@ import { User } from './user.entity';
 @Entity()
 export class UserProfile extends BaseTimestampedEntity {
   @IsString()
-  @Column()
-  firstName!: string;
+  @Column({ nullable: true })
+  @IsOptional()
+  firstName?: string;
 
   @IsString()
-  @Column()
-  lastName!: string;
+  @Column({ nullable: true })
+  @IsOptional()
+  lastName?: string;
 
   @IsEmail()
   @Column({

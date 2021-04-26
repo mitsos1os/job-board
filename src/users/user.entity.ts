@@ -1,5 +1,5 @@
 import { Entity, Column, OneToOne, OneToMany } from 'typeorm';
-import { IsString, Length } from 'class-validator';
+import { IsString, MinLength } from 'class-validator';
 import { UserProfile } from './user-profile.entity';
 import { BaseTimestampedEntity } from '../common/base-timestamped.entity';
 import { Company } from '../company/company.entity';
@@ -16,7 +16,7 @@ export class User extends BaseTimestampedEntity {
   username!: string;
 
   @IsString()
-  @Length(8, 40)
+  @MinLength(8)
   @Column()
   password!: string;
 
