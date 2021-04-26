@@ -23,7 +23,6 @@ export class AuthService {
   async signUp(createUserDto: CreateUserDto) {
     const { username, password, email } = createUserDto;
     this.logger.log(`Trying to sign up user with username: ${username}`);
-    // TODO manually check whether username/email already exists to throw appropriate error
     const hashedPassword = await hash(password, SALT_ROUNDS);
     const createdUser = await this.userService.create({
       username,
