@@ -6,4 +6,7 @@ export type LoggerMethods = keyof LoggerService;
 /**
  * User Object type missing the password for security reasons
  */
-export type UserObject = Omit<User, 'password'>;
+export interface UserObject {
+  id: User['id'];
+  username: User['username'];
+}

@@ -12,11 +12,13 @@ import { CreateUserDto } from '../users/dto/create-user.dto';
 import { UserErrors } from '../users/users.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { UserObject } from '../common/helpers';
+import { Public } from './decorators/public';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Public()
   @Post('signup')
   async signUp(@Body() createUserDto: CreateUserDto) {
     try {
@@ -32,6 +34,7 @@ export class AuthController {
   }
 
   @UseGuards(LocalAuthGuard)
+  @Public()
   @Post('login')
   login(@Req() req: Request) {
     return this.authService.login(req.user as UserObject);

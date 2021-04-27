@@ -38,7 +38,7 @@ export class AuthService {
 
   /**
    * Accept a username and password and check their validity against the user
-   * saves ones. Return values can be the following:
+   * saved ones. Return values can be the following:
    * - `null` - user not found
    * - `false` - user found, password does not match
    * - UserObject User object without password field
@@ -65,6 +65,11 @@ export class AuthService {
     return result;
   }
 
+  /**
+   * Accept a properly authenticated user entity and create - return the
+   * appropriate access token for the login
+   * @param user
+   */
   async login(user: UserObject) {
     const payload = { username: user.username, sub: user.id };
     return {

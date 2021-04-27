@@ -7,6 +7,9 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { jwtIssuer, jwtExpiration } from './constants';
+import { JwtStrategy } from './strategies/jwt.strategy';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -23,8 +26,18 @@ import { jwtIssuer, jwtExpiration } from './constants';
       }),
       inject: [ConfigService],
     }),
+    ConfigModule,
   ],
-  providers: [AuthService, Logger, LocalStrategy],
+  providers: [
+    AuthService,
+    Logger,
+    LocalStrategy,
+    JwtStrategy,
+    {
+      provide: APP_GUARD, // use jwt authentication globally on all routes
+      useClass: JwtAuthGuard,
+    },
+  ],
   controllers: [AuthController],
 })
 export class AuthModule {}
