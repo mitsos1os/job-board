@@ -3,6 +3,7 @@ import { UsersService } from '../users/users.service';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { hash, compare } from 'bcrypt';
 import { UserObject } from '../common/helpers';
+import { JwtService } from '@nestjs/jwt';
 
 /**
  * The number of salt rounds that should be used to use in hashing bcrypt values
@@ -14,6 +15,7 @@ export class AuthService {
   constructor(
     private userService: UsersService,
     private readonly logger: Logger,
+    private jwtService: JwtService,
   ) {}
 
   /**
@@ -63,10 +65,10 @@ export class AuthService {
     return result;
   }
 
-  async login(user: any) {
-    const payload = { username: user.username, sub: user.userId };
+  async login(user: UserObject) {
+    const payload = { username: user.username, sub: user.id };
     return {
-      // access_token: this.jwtService.sign(payload),
+      access_token: await this.jwtService.signAsync(payload),
     };
   }
 }

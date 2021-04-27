@@ -19,6 +19,9 @@ export class EnvConfig {
 
   @IsString()
   DB_PASS!: string;
+
+  @IsString()
+  JWT_SECRET!: string;
 }
 
 /**

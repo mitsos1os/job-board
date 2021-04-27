@@ -11,6 +11,7 @@ import { AuthService } from './auth.service';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { UserErrors } from '../users/users.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
+import { UserObject } from '../common/helpers';
 
 @Controller('auth')
 export class AuthController {
@@ -32,7 +33,7 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Req() req: Request) {
-    return req.user;
+  login(@Req() req: Request) {
+    return this.authService.login(req.user as UserObject);
   }
 }
