@@ -62,6 +62,7 @@ export class AuthService {
       this.logger.warn(`Incorrect password for User ${username}...`);
       return false;
     }
+    this.logger.log(`Successfully authenticated user ${username}...`);
     return result;
   }
 
@@ -71,7 +72,9 @@ export class AuthService {
    * @param user
    */
   async login(user: UserObject) {
-    const payload = { username: user.username, sub: user.id };
+    const { username, id } = user;
+    this.logger.warn(`Creating access token for user ${username}`);
+    const payload = { username, sub: id };
     return {
       access_token: await this.jwtService.signAsync(payload),
     };
