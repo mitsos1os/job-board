@@ -3,12 +3,14 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { createLogger } from './logger';
 import { attachSwaggerToApp } from './swagger';
+import * as helmet from 'helmet';
 
 async function bootstrap() {
   const logger = createLogger({ service: 'job-board' });
   const app = await NestFactory.create(AppModule, {
     logger,
   });
+  app.use(helmet()); // enable helmet
   app.setGlobalPrefix('/api/v1');
   attachSwaggerToApp(app, '/api/v1/explorer');
   const configService = app.get(ConfigService);

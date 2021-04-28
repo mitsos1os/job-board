@@ -40,6 +40,7 @@
     "bcrypt": "^5.0.1",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
+    "helmet": "^4.5.0",
     "nest-winston": "^1.4.2",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
