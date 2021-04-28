@@ -13,9 +13,10 @@ import { UserErrors } from '../users/users.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { UserObject } from '../common/helpers';
 import { Public } from './decorators/public';
-import { ApiBody } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { LoginDto } from './dto/login.dto';
 
+@ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}

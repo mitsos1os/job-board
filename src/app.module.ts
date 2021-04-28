@@ -35,6 +35,12 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService, { provide: APP_PIPE, useClass: ValidationPipe }],
+  providers: [
+    AppService,
+    {
+      provide: APP_PIPE,
+      useFactory: () => new ValidationPipe({ whitelist: true }),
+    },
+  ],
 })
 export class AppModule {}

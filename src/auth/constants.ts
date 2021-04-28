@@ -24,3 +24,13 @@ export interface JsonWebTokenUserPayload {
  * @see JwtAuthGuard
  */
 export const IS_PUBLIC_KEY = 'isPublic';
+
+/**
+ * The property on the request object where the validated user object will be
+ * attached to
+ */
+export const USER_REQUEST_KEY = 'user';
+
+export const DEFAULT_CRUD_AUTH_OPTIONS = {
+  property: USER_REQUEST_KEY,
+};

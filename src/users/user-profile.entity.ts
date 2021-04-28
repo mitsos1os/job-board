@@ -1,9 +1,14 @@
-import { Entity, Column, OneToOne, JoinColumn } from 'typeorm';
-import { IsString, IsEmail, IsOptional } from 'class-validator';
-import { BaseTimestampedEntity } from '../common/base-timestamped.entity';
+import {
+  Entity,
+  Column,
+  OneToOne,
+  JoinColumn,
+  PrimaryColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { IsString, IsEmail, IsOptional, IsDate } from 'class-validator';
 import { User } from './user.entity';
-import { OmitType } from '@nestjs/swagger';
-import { Type } from '@nestjs/common';
+import { ApiHideProperty } from '@nestjs/swagger';
 
 /**
  * Our main User Class containing PII (Personal Identifiable Information) for
@@ -11,10 +16,7 @@ import { Type } from '@nestjs/common';
  * @extends BaseTimestampedEntity
  */
 @Entity()
-export class UserProfile extends OmitType(
-  BaseTimestampedEntity as Type<BaseTimestampedEntity>,
-  ['id'] as const,
-) {
+export class UserProfile {
   @IsString()
   @Column({ nullable: true })
   @IsOptional()
@@ -31,11 +33,20 @@ export class UserProfile extends OmitType(
   })
   email!: string;
 
+  // explicitly define the userId join column to be usable in queries of user profile
+  @PrimaryColumn()
+  @ApiHideProperty()
+  userId!: number;
+
+  @ApiHideProperty()
   @OneToOne(() => User, (user) => user.profile, {
     onDelete: 'CASCADE',
     nullable: false,
-    primary: true,
   })
   @JoinColumn()
   user!: User;
+
+  @IsDate()
+  @UpdateDateColumn({ type: 'timestamptz' })
+  updatedAt!: Date;
 }
