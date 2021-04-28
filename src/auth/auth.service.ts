@@ -4,6 +4,8 @@ import { CreateUserDto } from '../users/dto/create-user.dto';
 import { hash, compare } from 'bcrypt';
 import { UserObject } from '../common/helpers';
 import { JwtService } from '@nestjs/jwt';
+import { SignupResponseDto } from './dto/signup.dto';
+import { LoginResponseDto } from './dto/login.dto';
 
 /**
  * The number of salt rounds that should be used to use in hashing bcrypt values
@@ -23,7 +25,7 @@ export class AuthService {
    * properly store the given credentials (hashing)
    * @param {CreateUserDto} createUserDto
    */
-  async signUp(createUserDto: CreateUserDto) {
+  async signUp(createUserDto: CreateUserDto): Promise<SignupResponseDto> {
     const { username, password, email } = createUserDto;
     this.logger.log(`Trying to sign up user with username: ${username}`);
     const hashedPassword = await hash(password, SALT_ROUNDS);
@@ -71,7 +73,7 @@ export class AuthService {
    * appropriate access token for the login
    * @param user
    */
-  async login(user: UserObject) {
+  async login(user: UserObject): Promise<LoginResponseDto> {
     const { username, id } = user;
     this.logger.warn(`Creating access token for user ${username}`);
     const payload = { username, sub: id };

@@ -13,11 +13,17 @@ import { UserErrors } from '../users/users.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { UserObject } from '../common/helpers';
 import { Public } from './decorators/public';
+import { ApiBody } from '@nestjs/swagger';
+import { LoginDto } from './dto/login.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  /**
+   * Sign up a user to the application by providing proper information
+   * @param {CreateUserDto} createUserDto
+   */
   @Public()
   @Post('signup')
   async signUp(@Body() createUserDto: CreateUserDto) {
@@ -33,6 +39,13 @@ export class AuthController {
     }
   }
 
+  /**
+   * Login the user to the application and return the created access token
+   * @param {Request} req
+   */
+  @ApiBody({
+    type: LoginDto,
+  })
   @UseGuards(LocalAuthGuard)
   @Public()
   @Post('login')

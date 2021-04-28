@@ -7,5 +7,5 @@ export class CreateUserDto extends PickType(User, [
   'password',
 ] as const) {
   @IsEmail()
-  email?: string;
+  email!: string;
 }
