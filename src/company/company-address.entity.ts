@@ -2,6 +2,7 @@ import { Entity, Column, ManyToOne } from 'typeorm';
 import { IsOptional, IsString } from 'class-validator';
 import { BaseTimestampedEntity } from '../common/base-timestamped.entity';
 import { Company } from './company.entity';
+import { ApiHideProperty } from '@nestjs/swagger';
 
 /**
  * Company Address Information
@@ -45,6 +46,7 @@ export class CompanyAddress extends BaseTimestampedEntity {
   @Column({ nullable: true })
   phone?: string;
 
+  @ApiHideProperty()
   @ManyToOne(() => Company, (company) => company.addresses, {
     onDelete: 'CASCADE',
     nullable: false,

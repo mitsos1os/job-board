@@ -4,6 +4,7 @@ import { BaseSoftDeleteEntity } from '../common/base-soft-delete.entity';
 import { CompanyAddress } from './company-address.entity';
 import { User } from '../users/user.entity';
 import { Job } from '../job/job.entity';
+import { ApiHideProperty } from '@nestjs/swagger';
 
 /**
  * Base company information
@@ -23,6 +24,7 @@ export class Company extends BaseSoftDeleteEntity {
   })
   addresses?: CompanyAddress[];
 
+  @ApiHideProperty()
   @ManyToOne(() => User, (user) => user.companies, {
     onDelete: 'CASCADE',
     nullable: false,

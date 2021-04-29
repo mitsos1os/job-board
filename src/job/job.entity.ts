@@ -3,6 +3,7 @@ import { IsString, Length } from 'class-validator';
 import { BaseSoftDeleteEntity } from '../common/base-soft-delete.entity';
 import { Company } from '../company/company.entity';
 import { User } from '../users/user.entity';
+import { ApiHideProperty } from '@nestjs/swagger';
 
 @Entity()
 export class Job extends BaseSoftDeleteEntity {
@@ -21,6 +22,7 @@ export class Job extends BaseSoftDeleteEntity {
   })
   company!: Company;
 
+  @ApiHideProperty()
   @ManyToOne(() => User, (user) => user.jobs, {
     onDelete: 'CASCADE',
     nullable: false,
