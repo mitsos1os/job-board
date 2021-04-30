@@ -1,5 +1,4 @@
 import { DeleteDateColumn } from 'typeorm';
-import { IsDate } from 'class-validator';
 import { BaseTimestampedEntity } from './base-timestamped.entity';
 
 /**
@@ -9,7 +8,6 @@ import { BaseTimestampedEntity } from './base-timestamped.entity';
  * @extends BaseTimestampedEntity
  */
 export abstract class BaseSoftDeleteEntity extends BaseTimestampedEntity {
-  @IsDate()
   @DeleteDateColumn({ type: 'timestamptz' })
   deletedAt?: Date;
 }

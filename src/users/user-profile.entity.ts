@@ -6,7 +6,7 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { IsString, IsEmail, IsOptional, IsDate } from 'class-validator';
+import { IsString, IsEmail, IsOptional } from 'class-validator';
 import { User } from './user.entity';
 import { ApiHideProperty } from '@nestjs/swagger';
 
@@ -46,7 +46,6 @@ export class UserProfile {
   @JoinColumn()
   user!: User;
 
-  @IsDate()
   @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt!: Date;
 }
