@@ -18,7 +18,7 @@ const persistUserId = (req: Request) => ({
 @ApiTags('Companies')
 @Crud({
   model: { type: Company },
-  query: { softDelete: true },
+  query: { softDelete: true, join: { addresses: {} } },
   dto: { create: CreateCompanyDto, update: UpdateCompanyDto },
   routes: {
     exclude: ['replaceOneBase', 'createManyBase'],
