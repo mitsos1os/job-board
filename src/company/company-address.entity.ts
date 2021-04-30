@@ -50,6 +50,7 @@ export class CompanyAddress extends BaseTimestampedEntity {
   @ManyToOne(() => Company, (company) => company.addresses, {
     onDelete: 'CASCADE',
     nullable: false,
+    orphanedRowAction: 'delete',
   })
   company!: Company;
 }

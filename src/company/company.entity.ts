@@ -24,6 +24,10 @@ export class Company extends BaseSoftDeleteEntity {
   })
   addresses?: CompanyAddress[];
 
+  @Column()
+  @ApiHideProperty()
+  userId!: User['id'];
+
   @ApiHideProperty()
   @ManyToOne(() => User, (user) => user.companies, {
     onDelete: 'CASCADE',
