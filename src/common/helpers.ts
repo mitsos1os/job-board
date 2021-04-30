@@ -15,6 +15,14 @@ export interface UserObject {
   username: User['username'];
 }
 
+export const filterUserId = (req: Request) => {
+  return req.method === 'GET'
+    ? {}
+    : {
+        userId: (req[USER_REQUEST_KEY] as UserObject)?.id,
+      };
+};
+
 export const persistUserId = (req: Request) => ({
   userId: (req[USER_REQUEST_KEY] as UserObject)?.id,
 });

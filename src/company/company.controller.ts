@@ -6,7 +6,7 @@ import { CompanyService } from './company.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { Public } from '../auth/decorators/public';
-import { persistUserId } from '../common/helpers';
+import { persistUserId, filterUserId } from '../common/helpers';
 import { CompanyResponseDto } from './dto/company-response.dto';
 
 @ApiTags('Companies')
@@ -30,6 +30,7 @@ import { CompanyResponseDto } from './dto/company-response.dto';
   },
 })
 @CrudAuth({
+  filter: filterUserId,
   persist: persistUserId,
 })
 @Controller('companies')
