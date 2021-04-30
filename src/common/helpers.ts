@@ -1,7 +1,9 @@
-import { LoggerService } from '@nestjs/common';
+import { LoggerService, Type } from '@nestjs/common';
 import { User } from '../users/user.entity';
 import { Request } from 'express';
 import { USER_REQUEST_KEY } from '../auth/constants';
+import { BaseTimestampedEntity } from './base-timestamped.entity';
+import { OmitType } from '@nestjs/swagger';
 
 export type LoggerMethods = keyof LoggerService;
 
@@ -24,3 +26,21 @@ export const persistUserId = (req: Request) => ({
 export const createUserFilteringFn = (userProperty = 'userId') => (
   user: UserObject,
 ) => ({ [userProperty]: user.id });
+
+/**
+ * Accept a model and omit its basic inherited properties from
+ * BaseTimestampedEntity. Can be useful creating DTOs
+ * @param Model
+ * @param extraKeysToOmit
+ * @see BaseTimestampedEntity
+ */
+export const omitBaseTimestampedProperties = <
+  T extends BaseTimestampedEntity,
+  K extends keyof T
+>(
+  Model: Type<T>,
+  extraKeysToOmit: K[] = [],
+) => {
+  const baseKeys = ['id', 'createdAt', 'updatedAt'] as const;
+  return OmitType(Model, [...baseKeys, ...extraKeysToOmit] as const);
+};

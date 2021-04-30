@@ -16,16 +16,27 @@ export class Job extends BaseSoftDeleteEntity {
   @Column({ type: 'text' })
   description!: string;
 
+  @ApiHideProperty()
+  @Column()
+  companyId!: number;
+
+  @ApiHideProperty()
   @ManyToOne(() => Company, (company) => company.jobs, {
     onDelete: 'CASCADE',
     nullable: false,
+    orphanedRowAction: 'delete',
   })
   company!: Company;
+
+  @Column()
+  @ApiHideProperty()
+  userId!: User['id'];
 
   @ApiHideProperty()
   @ManyToOne(() => User, (user) => user.jobs, {
     onDelete: 'CASCADE',
     nullable: false,
+    orphanedRowAction: 'delete',
   })
   user!: User;
 }
