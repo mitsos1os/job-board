@@ -5,15 +5,9 @@ import { Company } from './company.entity';
 import { CompanyService } from './company.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
-import { Request } from 'express';
-import { USER_REQUEST_KEY } from '../auth/constants';
 import { Public } from '../auth/decorators/public';
-import { UserObject } from '../common/helpers';
+import { persistUserId } from '../common/helpers';
 import { CompanyResponseDto } from './dto/company-response.dto';
-
-const persistUserId = (req: Request) => ({
-  userId: (req[USER_REQUEST_KEY] as UserObject)?.id,
-});
 
 @ApiTags('Companies')
 @Crud({
