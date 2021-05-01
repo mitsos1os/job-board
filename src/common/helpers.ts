@@ -1,4 +1,4 @@
-import { LoggerService, Type, UnauthorizedException } from '@nestjs/common';
+import { LoggerService, Type } from '@nestjs/common';
 import { User } from '../users/user.entity';
 import { Request } from 'express';
 import { USER_REQUEST_KEY } from '../auth/constants';
@@ -28,10 +28,7 @@ export const createUserOwnershipFn = (
   if (Array.isArray(excludeMethods) && excludeMethods.includes(req.method)) {
     return {};
   } else {
-    const userId = (<UserObject>req[USER_REQUEST_KEY])?.id;
-    if (userId == null)
-      throw new UnauthorizedException('No user credentials in request');
-    return { [userProperty]: userId };
+    return { [userProperty]: (<UserObject>req[USER_REQUEST_KEY])?.id };
   }
 };
 
