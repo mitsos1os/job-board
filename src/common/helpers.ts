@@ -1,4 +1,4 @@
-import { LoggerService, Type } from '@nestjs/common';
+import { LoggerService, Type, UnauthorizedException } from '@nestjs/common';
 import { User } from '../users/user.entity';
 import { Request } from 'express';
 import { USER_REQUEST_KEY } from '../auth/constants';
@@ -15,25 +15,29 @@ export interface UserObject {
   username: User['username'];
 }
 
-export const filterUserId = (req: Request) => {
-  return req.method === 'GET'
-    ? {}
-    : {
-        userId: (req[USER_REQUEST_KEY] as UserObject)?.id,
-      };
+/**
+ * Helper to create filtering functions that will provide proper objects
+ * to use on filtering and persisting crud requests for user owned entities
+ * @param userProperty
+ * @param excludeMethods
+ */
+export const createUserOwnershipFn = (
+  userProperty = 'userId',
+  excludeMethods?: string[],
+) => (req: Request) => {
+  if (Array.isArray(excludeMethods) && excludeMethods.includes(req.method)) {
+    return {};
+  } else {
+    const userId = (<UserObject>req[USER_REQUEST_KEY])?.id;
+    if (userId == null)
+      throw new UnauthorizedException('No user credentials in request');
+    return { [userProperty]: userId };
+  }
 };
 
-export const persistUserId = (req: Request) => ({
-  userId: (req[USER_REQUEST_KEY] as UserObject)?.id,
-});
-/**
- * Helper to create filtering functions that will provide proper objects for
- * to use on filtering and persisting crud requests for user owned entities
- * @param {string} [userProperty = userId]
- */
-export const createUserFilteringFn = (userProperty = 'userId') => (
-  user: UserObject,
-) => ({ [userProperty]: user.id });
+export const filterUserId = createUserOwnershipFn('userId', ['GET']);
+
+export const persistUserId = createUserOwnershipFn();
 
 /**
  * Accept a model and omit its basic inherited properties from
