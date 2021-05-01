@@ -1,5 +1,5 @@
 import { Entity, Column, ManyToOne } from 'typeorm';
-import { IsString, Length } from 'class-validator';
+import { IsNumber, IsString, Length } from 'class-validator';
 import { BaseSoftDeleteEntity } from '../common/base-soft-delete.entity';
 import { Company } from '../company/company.entity';
 import { User } from '../users/user.entity';
@@ -16,7 +16,7 @@ export class Job extends BaseSoftDeleteEntity {
   @Column({ type: 'text' })
   description!: string;
 
-  @ApiHideProperty()
+  @IsNumber()
   @Column()
   companyId!: number;
 

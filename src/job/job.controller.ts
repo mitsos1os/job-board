@@ -30,13 +30,11 @@ import { CompanyService } from '../company/company.service';
     create: JobResponseDto,
     update: JobResponseDto,
   },
-  params: { companyId: { field: 'companyId', type: 'number' } },
   query: { softDelete: true },
   routes: {
     exclude: ['replaceOneBase', 'createManyBase'],
     getOneBase: { decorators: [Public()] },
     getManyBase: { decorators: [Public()] },
-    createOneBase: { decorators: [ApiBearerAuth()] },
     updateOneBase: { decorators: [ApiBearerAuth()] },
     deleteOneBase: { decorators: [ApiBearerAuth()] },
     recoverOneBase: { decorators: [ApiBearerAuth()] },
@@ -46,7 +44,7 @@ import { CompanyService } from '../company/company.service';
   filter: filterUserId,
   persist: persistUserId,
 })
-@Controller('companies/:companyId/jobs')
+@Controller('jobs')
 export class JobController implements CrudController<Job> {
   constructor(
     public service: JobService,
@@ -58,11 +56,12 @@ export class JobController implements CrudController<Job> {
   }
 
   @Override()
+  @ApiBearerAuth()
   async createOne(
     @ParsedRequest() req: CrudRequest,
     @ParsedBody() dto: CreateJobDto,
   ) {
-    const companyId = JobController.extractCompanyParam(req);
+    const { companyId } = dto;
     if (companyId == null)
       throw new BadRequestException('Missing companyId to create job for');
     const {
@@ -85,14 +84,5 @@ export class JobController implements CrudController<Job> {
       );
     // All good continue
     return this.base.createOneBase?.(req, dto as Job);
-  }
-
-  private static extractCompanyParam(req: CrudRequest): number | null {
-    const {
-      parsed: { paramsFilter },
-    } = req;
-    const { value = null } =
-      paramsFilter.find((e) => e.field === 'companyId') ?? {};
-    return value;
   }
 }
