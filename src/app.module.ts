@@ -1,7 +1,5 @@
 import { Module, ValidationPipe } from '@nestjs/common';
 import { APP_PIPE } from '@nestjs/core';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { default as configuration } from './config';
 import { validate } from './config/env.validation';
@@ -34,9 +32,7 @@ import { AuthModule } from './auth/auth.module';
     JobModule,
     AuthModule,
   ],
-  controllers: [AppController],
   providers: [
-    AppService,
     {
       provide: APP_PIPE,
       useFactory: () => new ValidationPipe({ whitelist: true }),
