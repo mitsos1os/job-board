@@ -8,19 +8,55 @@ default:
   cache:
     paths:
       - node_modules
+  before_script:
+    - npm ci
 
+variables:
+  PORT: 3000
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: ""
+  DB_PORT: 5432
+  DB_HOST: postgres # The postgres image running
+  DB_USER: postgres
+  DB_PASS: ""
+  JWT_SECRET: jwttestvalue
+  DOCKER_TLS_CERTDIR: "/certs"
+  DOCKER_DRIVER: overlay2
 
 lint:
   stage: lint
-  before_script:
-    - npm ci
+  needs: []
   script:
     - npm run lint
 
 
-unit_tets:
+unit_test:
+  needs: []
   stage: test
-  before_script:
-    - npm ci
   script:
     - npm run test
+
+e2e_tests:
+  needs: []
+  stage: test
+  services:
+    - postgres:13
+  variables:
+    POSTGRES_DB: test-job-board
+    DB_NAME: test-job-board
+  script:
+    - npm run test:e2e
+
+build:
+  stage: build
+  when: manual
+  services:
+    - docker:19.03.12-dind
+  before_script:
+    - docker info
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker pull $CI_REGISTRY_IMAGE:latest || true
+    - docker build --cache-from $CI_REGISTRY_IMAGE:latest --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA --tag $CI_REGISTRY_IMAGE:latest .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE:latest
