@@ -81,6 +81,9 @@ export const initAndLoginUser = async (
   app: INestApplication,
   createUserData: CreateUserDto,
 ) => {
-  await createAppUser(app, createUserData);
-  return getAccessToken(app, createUserData);
+  const createdUser = await createAppUser(app, createUserData);
+  return {
+    id: createdUser.id,
+    accessToken: await getAccessToken(app, createUserData),
+  };
 };

@@ -32,7 +32,7 @@ describe('Testing authentication', () => {
   afterAll(async () => {
     // clear db
     await clearCreatedUser(app, {
-      username: dummyUser.username,
+      id: dummyUser.id,
     });
     await app.close();
   });

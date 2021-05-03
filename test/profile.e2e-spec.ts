@@ -10,18 +10,20 @@ import { In } from 'typeorm';
 import * as request from 'supertest';
 import { SignupResponseDto } from '../src/auth/dto/signup.dto';
 import { UsersService } from '../src/users/users.service';
+import { User } from '../src/users/user.entity';
 
 describe('Testing profile', () => {
   let app: INestApplication;
   let testRequest: request.SuperTest<request.Test>;
   let usersService: UsersService;
   let accessToken: string;
+  let userId: User['id'];
   const MAIN_PROFILE_PATH = '/profile';
   let secondUser: SignupResponseDto;
   beforeAll(async () => {
     app = await appModuleInitializer();
     testRequest = request(app.getHttpServer());
-    accessToken = await initAndLoginUser(app, basicTestUser);
+    ({ id: userId, accessToken } = await initAndLoginUser(app, basicTestUser));
     usersService = app.get<UsersService>(UsersService);
     // create second user
     secondUser = await createAppUser(app, {
@@ -33,7 +35,7 @@ describe('Testing profile', () => {
   afterAll(async () => {
     // clear db
     await clearCreatedUser(app, {
-      username: In([basicTestUser.username, secondUser.username]),
+      id: In([userId, secondUser.id]),
     });
     await app.close();
   });

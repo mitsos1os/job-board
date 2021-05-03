@@ -8,6 +8,7 @@ import { UpdateCompanyDto } from './dto/update-company.dto';
 import { Public } from '../auth/decorators/public';
 import { persistUserId, filterUserId } from '../common/helpers';
 import { CompanyResponseDto } from './dto/company-response.dto';
+import { HttpCode } from '@nestjs/common';
 
 @ApiTags('Companies')
 @Crud({
@@ -20,7 +21,7 @@ import { CompanyResponseDto } from './dto/company-response.dto';
     getManyBase: { decorators: [Public()] },
     createOneBase: { decorators: [ApiBearerAuth()] },
     updateOneBase: { decorators: [ApiBearerAuth()] },
-    deleteOneBase: { decorators: [ApiBearerAuth()] },
+    deleteOneBase: { decorators: [ApiBearerAuth(), HttpCode(204)] },
     recoverOneBase: { decorators: [ApiBearerAuth()] },
   },
   serialize: {
