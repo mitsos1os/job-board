@@ -5,6 +5,7 @@ import {
   BadRequestException,
   UseGuards,
   Req,
+  HttpCode,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { AuthService } from './auth.service';
@@ -50,6 +51,7 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Public()
   @Post('login')
+  @HttpCode(200)
   login(@Req() req: Request) {
     return this.authService.login(req.user as UserObject);
   }

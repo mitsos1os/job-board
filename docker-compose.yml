@@ -10,6 +10,13 @@ services:
       - "5432:5432"
     volumes:
       - "db-data:/var/lib/postgresql/data"
+  test-db:
+    image: postgres:13
+    env_file: .env
+    environment:
+      POSTGRES_DB: 'test-job-board'
+    ports:
+      - "15432:5432"
   pgAdmin:
     image: dpage/pgadmin4
     env_file: .env
