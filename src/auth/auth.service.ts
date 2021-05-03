@@ -10,7 +10,7 @@ import { LoginResponseDto } from './dto/login.dto';
 /**
  * The number of salt rounds that should be used to use in hashing bcrypt values
  */
-const SALT_ROUNDS = 10;
+export const SALT_ROUNDS = 10;
 
 @Injectable()
 export class AuthService {
