@@ -71,7 +71,7 @@ export class JobController implements CrudController<Job> {
     } = req;
     if (userId == null)
       throw new UnauthorizedException(
-        'Missing credentials in POST-CREATE Job request',
+        ['Missing credentials in POST-CREATE Job request'],
       );
     // check whether company Id belongs to user
     const userCompany = await this.companyService.count({
@@ -80,7 +80,7 @@ export class JobController implements CrudController<Job> {
     });
     if (userCompany !== 1)
       throw new UnauthorizedException(
-        `Not allowed to create job under companyId ${companyId} using provided credentials`,
+        [`Not allowed to create job under companyId ${companyId} using provided credentials`],
       );
     // All good continue
     return this.base.createOneBase?.(req, dto as Job);
