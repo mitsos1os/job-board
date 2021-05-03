@@ -14,11 +14,11 @@ default:
 variables:
   PORT: 3000
   POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: ""
+  POSTGRES_PASSWORD: "testpass"
   DB_PORT: 5432
   DB_HOST: postgres # The postgres image running
   DB_USER: postgres
-  DB_PASS: ""
+  DB_PASS: "testpass"
   JWT_SECRET: jwttestvalue
   DOCKER_TLS_CERTDIR: "/certs"
   DOCKER_DRIVER: overlay2
