@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { CustomError } from '../common/CustomError';
 import { LoggerMethods } from '../common/helpers';
+import { UserProfileService } from './user-profile.service';
 
 export enum UserErrors {
   usernameExists = 'USERNAME_EXISTS',
@@ -17,8 +18,7 @@ export enum UserErrors {
 export class UsersService extends TypeOrmCrudService<User> {
   constructor(
     @InjectRepository(User) private usersRepo: Repository<User>,
-    @InjectRepository(UserProfile)
-    private userProfileRepo: Repository<UserProfile>,
+    private userProfileService: UserProfileService,
     private readonly logger: Logger,
   ) {
     super(usersRepo);
@@ -46,7 +46,7 @@ export class UsersService extends TypeOrmCrudService<User> {
     this.logger.debug(`Creating new database user`);
     const { email, ...userCredentials } = createUserDto;
     const [existingEmailCount, existingUsernameCount] = await Promise.all([
-      this.userProfileRepo.count({ email }),
+      this.userProfileService.count({ email }),
       this.usersRepo.count({ username: userCredentials.username }),
     ]);
     if (existingEmailCount)
