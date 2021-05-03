@@ -49,6 +49,7 @@ e2e_tests:
 
 build:
   stage: build
+  image: docker:19.03.12
   when: manual
   services:
     - docker:19.03.12-dind
