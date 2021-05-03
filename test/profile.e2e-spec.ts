@@ -4,7 +4,6 @@ import {
   clearCreatedUser,
   initAndLoginUser,
   createAppUser,
-  basicTestUser,
 } from './e2e-helpers';
 import { In } from 'typeorm';
 import * as request from 'supertest';
@@ -23,7 +22,11 @@ describe('Testing profile', () => {
   beforeAll(async () => {
     app = await appModuleInitializer();
     testRequest = request(app.getHttpServer());
-    ({ id: userId, accessToken } = await initAndLoginUser(app, basicTestUser));
+    ({ id: userId, accessToken } = await initAndLoginUser(app, {
+      username: 'profile-user',
+      password: 'userprofilepass',
+      email: 'user@profile-test.net',
+    }));
     usersService = app.get<UsersService>(UsersService);
     // create second user
     secondUser = await createAppUser(app, {
@@ -50,7 +53,7 @@ describe('Testing profile', () => {
         .get(MAIN_PROFILE_PATH)
         .set('Authorization', `Bearer ${accessToken}`)
         .expect(200);
-      expect(email).toEqual(basicTestUser.email);
+      expect(email).toEqual('user@profile-test.net');
     });
   });
   describe('Updating profile', () => {

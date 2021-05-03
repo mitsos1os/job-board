@@ -23,7 +23,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "NODE_ENV=test DB_PORT=${DB_PORT:-15432} DB_NAME=${DB_NAME:-test-job-board} jest --config ./test/jest-e2e.json",
+    "test:e2e": "NODE_ENV=test DB_PORT=${DB_PORT:-15432} DB_NAME=${DB_NAME:-test-job-board} jest --config ./test/jest-e2e.json --runInBand",
     "postgres": "docker-compose up db",
     "test-db": "docker-compose up test-db"
   },

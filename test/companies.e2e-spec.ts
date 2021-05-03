@@ -3,7 +3,6 @@ import {
   appModuleInitializer,
   clearCreatedUser,
   initAndLoginUser,
-  basicTestUser,
   createAppUser,
 } from './e2e-helpers';
 import * as request from 'supertest';
@@ -24,7 +23,11 @@ describe('Testing Companies', () => {
     app = await appModuleInitializer();
     companyRepo = app.get<Repository<Company>>(getRepositoryToken(Company));
     testRequest = request(app.getHttpServer());
-    ({ id: userId, accessToken } = await initAndLoginUser(app, basicTestUser));
+    ({ id: userId, accessToken } = await initAndLoginUser(app, {
+      username: 'company-user-1',
+      password: 'companypass',
+      email: 'user@company.net',
+    }));
   });
   afterAll(async () => {
     // clear db
