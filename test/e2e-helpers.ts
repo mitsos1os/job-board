@@ -6,8 +6,11 @@ import { Connection } from 'typeorm';
 import { CreateUserDto } from '../src/users/dto/create-user.dto';
 import { AuthService } from '../src/auth/auth.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import * as request from 'supertest';
 import { User } from '../src/users/user.entity';
+import { FindConditions } from 'typeorm/find-options/FindConditions';
+import { UsersService } from '../src/users/users.service';
 
 export const appModuleInitializer = async (init = true, dropDb = false) => {
   const moduleRef: TestingModule = await Test.createTestingModule({
@@ -30,15 +33,27 @@ export const createAppUser = async (
   app: INestApplication,
   createUserData: CreateUserDto,
 ) => {
+  const userService = app.get<UsersService>(UsersService);
+  const existingUser = await userService.findOne({
+    where: { username: createUserData.username },
+    relations: ['profile'],
+  });
+  if (existingUser) {
+    return {
+      id: existingUser.id,
+      username: existingUser.username,
+      email: existingUser.profile?.email,
+    };
+  }
   const authService = app.get<AuthService>(AuthService);
   return authService.signUp(createUserData);
 };
 
 export const clearCreatedUser = async (
   app: INestApplication,
-  userFilter: Partial<User>,
+  userFilter: FindConditions<User>,
 ) => {
-  const userRepo = app.get(getRepositoryToken(User));
+  const userRepo = app.get<Repository<User>>(getRepositoryToken(User));
   return userRepo.delete(userFilter);
 };
 

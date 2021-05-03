@@ -5,7 +5,7 @@ describe('AppController (e2e)', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
-    app = await appModuleInitializer(true, true); // drop database here
+    app = await appModuleInitializer(true, false); // drop database here
   });
 
   afterAll(async () => {
