@@ -1,5 +1,9 @@
 import { INestApplication } from '@nestjs/common';
-import { appModuleInitializer, createAppUser } from './e2e-helpers';
+import {
+  appModuleInitializer,
+  createAppUser,
+  clearCreatedUser,
+} from './e2e-helpers';
 import { User } from '../src/users/user.entity';
 import * as request from 'supertest';
 import { getRepositoryToken } from '@nestjs/typeorm';
@@ -27,10 +31,9 @@ describe('Testing authentication', () => {
   });
   afterAll(async () => {
     // clear db
-    await userRepo.delete({
+    await clearCreatedUser(app, {
       username: dummyUser.username,
     });
-
     await app.close();
   });
   describe('Testing sign up', () => {
