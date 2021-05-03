@@ -1,0 +1,26 @@
+stages:
+  - lint
+  - test
+  - build
+
+default:
+  image: node:14
+  cache:
+    paths:
+      - node_modules
+
+
+lint:
+  stage: lint
+  before_script:
+    - npm ci
+  script:
+    - npm run lint
+
+
+unit_tets:
+  stage: test
+  before_script:
+    - npm ci
+  script:
+    - npm run test
