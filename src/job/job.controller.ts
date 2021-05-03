@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Controller,
+  HttpCode,
   UnauthorizedException,
 } from '@nestjs/common';
 import {
@@ -36,7 +37,7 @@ import { CompanyService } from '../company/company.service';
     getOneBase: { decorators: [Public()] },
     getManyBase: { decorators: [Public()] },
     updateOneBase: { decorators: [ApiBearerAuth()] },
-    deleteOneBase: { decorators: [ApiBearerAuth()] },
+    deleteOneBase: { decorators: [ApiBearerAuth(), HttpCode(204)] },
     recoverOneBase: { decorators: [ApiBearerAuth()] },
   },
 })
@@ -70,18 +71,18 @@ export class JobController implements CrudController<Job> {
       },
     } = req;
     if (userId == null)
-      throw new UnauthorizedException(
-        ['Missing credentials in POST-CREATE Job request'],
-      );
+      throw new UnauthorizedException([
+        'Missing credentials in POST-CREATE Job request',
+      ]);
     // check whether company Id belongs to user
     const userCompany = await this.companyService.count({
       id: companyId,
       userId,
     });
     if (userCompany !== 1)
-      throw new UnauthorizedException(
-        [`Not allowed to create job under companyId ${companyId} using provided credentials`],
-      );
+      throw new UnauthorizedException([
+        `Not allowed to create job under companyId ${companyId} using provided credentials`,
+      ]);
     // All good continue
     return this.base.createOneBase?.(req, dto as Job);
   }
