@@ -7,7 +7,15 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from './user.entity';
 
 // Module mocks
-jest.mock('@nestjsx/crud-typeorm');
+jest.mock('@nestjsx/crud-typeorm', () => ({
+  // provide mock implementation of TypeOrmCrudService to gain access to repo
+  TypeOrmCrudService: class MockTypeOrmCrudService {
+    private repo: any;
+    constructor(repo: any) {
+      this.repo = repo;
+    }
+  },
+}));
 
 describe('UsersService', () => {
   let userService: UsersService;

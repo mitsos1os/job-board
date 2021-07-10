@@ -17,7 +17,7 @@ export enum UserErrors {
 @Injectable()
 export class UsersService extends TypeOrmCrudService<User> {
   constructor(
-    @InjectRepository(User) private usersRepo: Repository<User>,
+    @InjectRepository(User) usersRepo: Repository<User>,
     private userProfileService: UserProfileService,
     private readonly logger: Logger,
   ) {
@@ -47,7 +47,7 @@ export class UsersService extends TypeOrmCrudService<User> {
     const { email, ...userCredentials } = createUserDto;
     const [existingEmailCount, existingUsernameCount] = await Promise.all([
       this.userProfileService.count({ email }),
-      this.usersRepo.count({ username: userCredentials.username }),
+      this.repo.count({ username: userCredentials.username }),
     ]);
     if (existingEmailCount)
       this.logErrorAndThrow(
@@ -65,13 +65,13 @@ export class UsersService extends TypeOrmCrudService<User> {
         ),
         'warn',
       );
-    const user = this.usersRepo.create(userCredentials);
+    const user = this.repo.create(userCredentials);
     if (email) {
       // we can directly assign profile to be created due to cascade option in
       // our User entity configuration
       user.profile = new UserProfile();
       user.profile.email = email;
     }
-    return this.usersRepo.save(user);
+    return this.repo.save(user);
   }
 }
